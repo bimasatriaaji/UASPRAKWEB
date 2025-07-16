@@ -8,11 +8,19 @@ use Illuminate\Http\Request;
 
 class ZakatController extends Controller
 {
-    public function index()
-    {
-        $zakats = Zakat::with('donatur')->get(); // relasi benar: donatur
-        return view('zakats.index', compact('zakats'));
-    }
+    public function index(Request $request)
+{
+    $zakats = Zakat::with('donatur')
+        ->when($request->search, function ($query) use ($request) {
+            $query->whereHas('donatur', function ($q) use ($request) {
+                $q->where('nama', 'like', '%' . $request->search . '%');
+            });
+        })
+        ->get();
+
+    return view('zakats.index', compact('zakats'));
+}
+
 
     public function create()
     {

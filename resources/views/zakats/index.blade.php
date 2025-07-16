@@ -2,13 +2,22 @@
 
 @section('content')
 <div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="fw-bold text-success">Data Zakat</h3>
         <a href="{{ route('zakats.create') }}" class="btn btn-success shadow-sm">
             <i class="bi bi-plus-circle me-1"></i> Tambah Zakat
         </a>
     </div>
 
+    {{-- Form Pencarian --}}
+    <form method="GET" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="search" value="{{ request('search') }}" class="form-control" placeholder="Cari nama muzakki...">
+            <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
+        </div>
+    </form>
+
+    {{-- Flash Message --}}
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <i class="bi bi-check-circle-fill me-2"></i>{{ session('success') }}
@@ -16,6 +25,7 @@
         </div>
     @endif
 
+    {{-- Tabel Zakat --}}
     <div class="card shadow-sm border-0">
         <div class="card-body">
             <div class="table-responsive">

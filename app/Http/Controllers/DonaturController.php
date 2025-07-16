@@ -8,11 +8,21 @@ use Illuminate\Http\Request;
 class DonaturController extends Controller
 {
     // Tampilkan semua data donatur/muzakki
-    public function index()
-    {
-        $donaturs = Donatur::all();
-        return view('donaturs.index', compact('donaturs'));
+   public function index(Request $request)
+{
+    $query = Donatur::query();
+
+    if ($request->has('search') && $request->search != '') {
+        $query->where('nama', 'like', '%' . $request->search . '%')
+              ->orWhere('email', 'like', '%' . $request->search . '%')
+              ->orWhere('no_hp', 'like', '%' . $request->search . '%');
     }
+
+    $donaturs = $query->get();
+
+    return view('donaturs.index', compact('donaturs'));
+}
+
 
     // Form tambah donatur
     public function create()

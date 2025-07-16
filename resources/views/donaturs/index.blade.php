@@ -16,6 +16,21 @@
         </div>
     @endif
 
+    <!-- Form Pencarian -->
+    <div class="mb-3">
+        <form method="GET" action="{{ route('donaturs.index') }}" class="d-flex">
+            <input type="text" name="search" class="form-control me-2" placeholder="Cari nama, email, atau no HP" value="{{ request('search') }}">
+            <button type="submit" class="btn btn-outline-success me-2">
+                <i class="bi bi-search"></i> Cari
+            </button>
+            @if(request('search'))
+                <a href="{{ route('donaturs.index') }}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-clockwise"></i> Reset
+                </a>
+            @endif
+        </form>
+    </div>
+
     <div class="card shadow-sm border-0">
         <div class="card-body">
             <div class="table-responsive">
@@ -63,6 +78,11 @@
                         @endforelse
                     </tbody>
                 </table>
+
+                {{-- Pagination jika diaktifkan di controller --}}
+                {{-- <div class="mt-3">
+                    {{ $donaturs->withQueryString()->links() }}
+                </div> --}}
             </div>
         </div>
     </div>

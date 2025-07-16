@@ -9,11 +9,19 @@ use Illuminate\Http\Request;
 class DonasiController extends Controller
 {
     // Tampilkan semua donasi
-    public function index()
-    {
-        $donasis = Donasi::with('donatur')->get();
-        return view('donasis.index', compact('donasis'));
-    }
+   public function index(Request $request)
+{
+    $donasis = Donasi::with('donatur')
+        ->when($request->search, function ($query) use ($request) {
+            $query->whereHas('donatur', function ($q) use ($request) {
+                $q->where('nama', 'like', '%' . $request->search . '%');
+            });
+        })
+        ->get();
+
+    return view('donasis.index', compact('donasis'));
+}
+
 
     // Form tambah donasi
     public function create()
